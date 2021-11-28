@@ -10,7 +10,7 @@ import os
 # 2 = INFO and WARNING messages are not printed
 # 3 = INFO, WARNING, and ERROR messages are not printed
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'
 
 import tensorflow as tf
 import numpy as np
@@ -18,7 +18,7 @@ from tqdm import tqdm
 
 from utils import best_loss, magic_accuracy
 
-print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
 
@@ -34,13 +34,13 @@ model = tf.keras.models.load_model(models_path + 'model_tech_db_filtered2020-05-
 
 #model.summary()
 
-image = np.array([np.load('../res/dataset/1000008.npy')])
+image = np.array([np.load('../res/dataset/1000008.npy')], dtype=np.float32)
 
-qp = np.array([22])
+qp = np.array([22], dtype=np.float32)
 
 elapsed_times = []
 
-for i in tqdm(range(10000)):
+for i in tqdm(range(1000)):
 
 	start_time = time.time()
 
@@ -52,3 +52,7 @@ for i in tqdm(range(10000)):
 	elapsed_times.append((end_time - start_time) * 1000)
 
 print('Inferences finished ! Dimensions : ', prediction.shape, ' / Average execution time : %.3f ms ' % (sum(elapsed_times)/len(elapsed_times)), sep="")
+
+
+
+
